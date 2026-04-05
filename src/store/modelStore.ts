@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { Model, FilterOptions, Capability } from '../types';
-import { fetchOpenRouterModels } from '../lib/api';
+import { fetchOpenRouterModels, refreshOpenRouterModels } from '../lib/api';
 
 interface ModelState {
   models: Model[];
@@ -16,6 +16,7 @@ interface ModelState {
   applyFilters: () => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
+  refreshModels: () => Promise<void>;
 }
 
 const initialFilters: FilterOptions = {
@@ -186,6 +187,34 @@ export const useModelStore = create<ModelState>((set, get) => ({
   
   setLoading: (loading) => set({ isLoading: loading }),
   setError: (error) => set({ error }),
+  
+  refreshModels: async () => {
+    try {
+      set({ isLoading: true, error: null });
+      const models = await refreshOpenRouterModels();
+      const convertedModels = models.map((model: any) => ({
+        id: model.id,
+        name: model.name,
+        provider: model.provider,
+        description: model.description || 'No description available',
+        capabilities: [], // Extract capabilities from API response if available
+        price: {
+          input: parseFloat(model.pricing?.prompt || '0'),
+          output: parseFloat(model.pricing?.completion || '0'),
+          unit: 'per 1K tokens'
+        },
+        isFree: parseFloat(model.pricing?.prompt || '0') === 0 && parseFloat(model.pricing?.completion || '0') === 0,
+        recommendedFor: [] // Extract recommended use cases from API response if available
+      }));
+      set({ models: convertedModels, filteredModels: convertedModels });
+      get().applyFilters();
+    } catch (error) {
+      console.error('Failed to refresh OpenRouter models:', error);
+      set({ error: 'Failed to refresh models. Using cached data.' });
+    } finally {
+      set({ isLoading: false });
+    }
+  },
 }));
 
 // Initialize with real data from OpenRouter API
