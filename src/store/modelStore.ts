@@ -104,19 +104,40 @@ function extractCapabilities(model: any): string[] {
     const modality = model.architecture.modality;
     if (modality.includes('image')) {
       capabilities.push('image-generation');
+      capabilities.push('image-understanding');
     }
     if (modality.includes('video')) {
       capabilities.push('video-generation');
+      capabilities.push('video-understanding');
+    }
+    if (modality.includes('image') || modality.includes('video')) {
+      capabilities.push('multimodal');
     }
   }
   
   // Check input/output modalities
   if (model.architecture?.input_modalities) {
     if (model.architecture.input_modalities.includes('image')) {
-      capabilities.push('image-understanding');
+      if (!capabilities.includes('image-understanding')) {
+        capabilities.push('image-understanding');
+      }
+      if (!capabilities.includes('image-generation')) {
+        capabilities.push('image-generation');
+      }
+      if (!capabilities.includes('multimodal')) {
+        capabilities.push('multimodal');
+      }
     }
     if (model.architecture.input_modalities.includes('video')) {
-      capabilities.push('video-understanding');
+      if (!capabilities.includes('video-understanding')) {
+        capabilities.push('video-understanding');
+      }
+      if (!capabilities.includes('video-generation')) {
+        capabilities.push('video-generation');
+      }
+      if (!capabilities.includes('multimodal')) {
+        capabilities.push('multimodal');
+      }
     }
   }
   
@@ -150,8 +171,10 @@ function extractCapabilities(model: any): string[] {
   if (description.includes('data') || description.includes('analysis')) {
     capabilities.push('data-analysis');
   }
-  if (description.includes('multimodal')) {
-    capabilities.push('multimodal');
+  if (description.includes('multimodal') || description.includes('image') || description.includes('video')) {
+    if (!capabilities.includes('multimodal')) {
+      capabilities.push('multimodal');
+    }
   }
   
   // Remove duplicates
