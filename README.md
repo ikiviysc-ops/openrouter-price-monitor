@@ -4,7 +4,11 @@
 
 ## 🚀 在线预览
 
-**项目托管在 GitHub，您可以：**
+**项目已部署到 GitHub Pages，您可以直接访问监控页面：**
+
+[OpenRouter 模型价格监控](https://ikiviysc-ops.github.io/openrouter-price-monitor)
+
+**其他访问方式：**
 
 1. **查看源代码**：[GitHub 仓库](https://github.com/ikiviysc-ops/openrouter-price-monitor)
 
