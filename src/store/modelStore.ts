@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { Model, FilterOptions, Capability } from '../types';
+import { fetchOpenRouterModels } from '../lib/api';
 
 interface ModelState {
   models: Model[];
@@ -187,8 +188,50 @@ export const useModelStore = create<ModelState>((set, get) => ({
   setError: (error) => set({ error }),
 }));
 
-// Initialize with mock data
-console.log('Initializing model store with mock data:', mockModels);
+// Initialize with real data from OpenRouter API
 const store = useModelStore.getState();
-store.applyFilters();
-console.log('Initial filtered models:', store.filteredModels);
+
+async function initializeModels() {
+  console.log('Starting to fetch OpenRouter models...');
+  try {
+    store.setLoading(true);
+    console.log('Calling fetchOpenRouterModels...');
+    const models = await fetchOpenRouterModels();
+    console.log('API response received, models count:', models.length);
+    
+    // Convert API response to our Model type
+    const convertedModels = models.map((model: any) => ({
+      id: model.id,
+      name: model.name,
+      provider: model.provider,
+      description: model.description || 'No description available',
+      capabilities: [], // Extract capabilities from API response if available
+      price: {
+        input: parseFloat(model.pricing?.prompt || '0'),
+        output: parseFloat(model.pricing?.completion || '0'),
+        unit: 'per 1K tokens'
+      },
+      isFree: parseFloat(model.pricing?.prompt || '0') === 0 && parseFloat(model.pricing?.completion || '0') === 0,
+      recommendedFor: [] // Extract recommended use cases from API response if available
+    }));
+    
+    console.log('Converted models count:', convertedModels.length);
+    console.log('First few models:', convertedModels.slice(0, 3));
+    
+    // Set models and log the result
+    store.setModels(convertedModels);
+    console.log('Models set successfully');
+  } catch (error) {
+    console.error('Failed to fetch OpenRouter models, using mock data:', error);
+    // Use mock data as fallback
+    store.setModels(mockModels);
+    console.log('Using mock data as fallback');
+  } finally {
+    store.setLoading(false);
+    store.applyFilters();
+    console.log('Initial filtered models count:', store.filteredModels.length);
+  }
+}
+
+// Fetch models on initialization
+initializeModels();
