@@ -4,9 +4,15 @@
 
 ## 🚀 在线预览
 
-**项目已部署在线，您可以直接访问：**
+**项目托管在 GitHub，您可以：**
 
-[OpenRouter 模型价格监控](https://openrouter-model-monitor.vercel.app/)
+1. **查看源代码**：[GitHub 仓库](https://github.com/ikiviysc-ops/openrouter-price-monitor)
+
+2. **本地运行**：克隆仓库后按照下方的安装指南运行
+
+3. **部署预览**：可以使用 Vercel、Netlify 等平台一键部署
+
+   [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ikiviysc-ops/openrouter-price-monitor)
 
 ## ✨ 主要功能
 
