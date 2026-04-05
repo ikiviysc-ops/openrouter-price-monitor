@@ -2,6 +2,19 @@ import { create } from 'zustand';
 import { Model, FilterOptions, Capability } from '../types';
 import { fetchOpenRouterModels, refreshOpenRouterModels } from '../lib/api';
 
+// Simple translation function for model descriptions
+function translateDescription(description: string): string {
+  // Common model description translations
+  const translations: Record<string, string> = {
+    'Gemma 4 26B A4B IT is an instruction-tuned Mixture-of-Experts (MoE) model from Google DeepMind. Despite 25.2B total parameters, only 3.8B activate per token during inference — delivering near-31B quality at a fraction of the compute cost. Supports multimodal input including text, images, and video (up to 60s at 1fps). Features a 256K token context window, native function calling, configurable thinking/reasoning mode, and structured output support. Released under Apache 2.0.': 'Gemma 4 26B A4B IT 是 Google DeepMind 开发的指令调优混合专家 (MoE) 模型。尽管总共有 252 亿参数，但在推理过程中每个 token 只激活 38 亿参数 —— 以更低的计算成本提供接近 31B 模型的质量。支持多模态输入，包括文本、图像和视频（最多 60 秒，1fps）。具有 256K token 上下文窗口、原生函数调用、可配置的思考/推理模式和结构化输出支持。以 Apache 2.0 许可证发布。',
+    'Gemma 4 31B Instruct is Google DeepMind\'s 30.7B dense multimodal model supporting text and image input with text output. Features a 256K token context window, configurable thinking/reasoning mode, native function calling, and multilingual support across 140+ languages. Strong on coding, reasoning, and document understanding tasks. Apache 2.0 license.': 'Gemma 4 31B Instruct 是 Google DeepMind 的 307 亿密集型多模态模型，支持文本和图像输入，文本输出。具有 256K token 上下文窗口、可配置的思考/推理模式、原生函数调用和支持 140+ 种语言的多语言能力。在编码、推理和文档理解任务上表现出色。Apache 2.0 许可证。',
+    'No description available': '无描述可用',
+  };
+  
+  // Return translation if available, otherwise return original
+  return translations[description] || description;
+}
+
 interface ModelState {
   models: Model[];
   filteredModels: Model[];
@@ -199,7 +212,7 @@ export const useModelStore = create<ModelState>((set, get) => ({
           id: model.id,
           name: model.name,
           provider: model.provider,
-          description: model.description || 'No description available',
+          description: translateDescription(model.description || 'No description available'),
           capabilities: [], // Extract capabilities from API response if available
           price: {
             input: inputPrice * 1000000, // Convert from per token to per 1M tokens
@@ -240,7 +253,7 @@ async function initializeModels() {
         id: model.id,
         name: model.name,
         provider: model.provider,
-        description: model.description || 'No description available',
+        description: translateDescription(model.description || 'No description available'),
         capabilities: [], // Extract capabilities from API response if available
         price: {
           input: inputPrice * 1000000, // Convert from per token to per 1M tokens
