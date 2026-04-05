@@ -34,7 +34,7 @@ const mockModels: Model[] = [
     provider: 'OpenAI',
     description: '最先进的多模态模型，支持文本和图像理解',
     capabilities: ['coding', 'content-creation', 'conversation', 'translation', 'data-analysis'],
-    price: { input: 0.005, output: 0.015, unit: 'per 1K tokens' },
+    price: { input: 5, output: 15, unit: 'm' }, // 0.005 * 1000 = 5 per 1M tokens
     isFree: false,
     recommendedFor: ['coding', 'content-creation'],
   },
@@ -44,7 +44,7 @@ const mockModels: Model[] = [
     provider: 'Anthropic',
     description: '强大的语言模型，擅长长文本理解和创意写作',
     capabilities: ['content-creation', 'conversation', 'translation', 'data-analysis'],
-    price: { input: 0.003, output: 0.015, unit: 'per 1K tokens' },
+    price: { input: 3, output: 15, unit: 'm' }, // 0.003 * 1000 = 3 per 1M tokens
     isFree: false,
     recommendedFor: ['content-creation'],
   },
@@ -54,7 +54,7 @@ const mockModels: Model[] = [
     provider: 'Google',
     description: '快速响应的多模态模型，适合实时应用',
     capabilities: ['coding', 'content-creation', 'image-generation', 'conversation', 'translation'],
-    price: { input: 0.00015, output: 0.0006, unit: 'per 1K tokens' },
+    price: { input: 0.15, output: 0.6, unit: 'm' }, // 0.00015 * 1000 = 0.15 per 1M tokens
     isFree: false,
     recommendedFor: ['coding', 'image-generation'],
   },
@@ -64,7 +64,7 @@ const mockModels: Model[] = [
     provider: 'Meta',
     description: '大型语言模型，适合复杂任务和长上下文',
     capabilities: ['coding', 'content-creation', 'conversation', 'translation', 'data-analysis'],
-    price: { input: 0.001, output: 0.003, unit: 'per 1K tokens' },
+    price: { input: 1, output: 3, unit: 'm' }, // 0.001 * 1000 = 1 per 1M tokens
     isFree: false,
     recommendedFor: ['coding', 'data-analysis'],
   },
@@ -74,7 +74,7 @@ const mockModels: Model[] = [
     provider: 'Mistral AI',
     description: '高效的语言模型，平衡性能和成本',
     capabilities: ['coding', 'content-creation', 'conversation', 'translation'],
-    price: { input: 0.002, output: 0.006, unit: 'per 1K tokens' },
+    price: { input: 2, output: 6, unit: 'm' }, // 0.002 * 1000 = 2 per 1M tokens
     isFree: false,
     recommendedFor: ['coding', 'content-creation'],
   },
@@ -84,7 +84,7 @@ const mockModels: Model[] = [
     provider: 'OpenAI',
     description: '经济实惠的语言模型，适合日常任务',
     capabilities: ['content-creation', 'conversation', 'translation'],
-    price: { input: 0.0005, output: 0.0015, unit: 'per 1K tokens' },
+    price: { input: 0.5, output: 1.5, unit: 'm' }, // 0.0005 * 1000 = 0.5 per 1M tokens
     isFree: false,
     recommendedFor: ['content-creation'],
   },
@@ -94,7 +94,7 @@ const mockModels: Model[] = [
     provider: 'Google',
     description: '轻量级模型，适合简单任务和快速响应',
     capabilities: ['conversation', 'translation'],
-    price: { input: 0, output: 0, unit: 'per 1K tokens' },
+    price: { input: 0, output: 0, unit: 'm' },
     isFree: true,
     recommendedFor: ['conversation'],
   },
@@ -104,7 +104,7 @@ const mockModels: Model[] = [
     provider: 'Stability AI',
     description: '先进的图像生成模型，创建高质量图像',
     capabilities: ['image-generation'],
-    price: { input: 0.01, output: 0.01, unit: 'per image' },
+    price: { input: 10, output: 10, unit: 'm' }, // 保持原价，因为是per image
     isFree: false,
     recommendedFor: ['image-generation'],
   },
@@ -192,20 +192,24 @@ export const useModelStore = create<ModelState>((set, get) => ({
     try {
       set({ isLoading: true, error: null });
       const models = await refreshOpenRouterModels();
-      const convertedModels = models.map((model: any) => ({
-        id: model.id,
-        name: model.name,
-        provider: model.provider,
-        description: model.description || 'No description available',
-        capabilities: [], // Extract capabilities from API response if available
-        price: {
-          input: parseFloat(model.pricing?.prompt || '0'),
-          output: parseFloat(model.pricing?.completion || '0'),
-          unit: 'per 1K tokens'
-        },
-        isFree: parseFloat(model.pricing?.prompt || '0') === 0 && parseFloat(model.pricing?.completion || '0') === 0,
-        recommendedFor: [] // Extract recommended use cases from API response if available
-      }));
+      const convertedModels = models.map((model: any) => {
+        const inputPrice = parseFloat(model.pricing?.prompt || '0');
+        const outputPrice = parseFloat(model.pricing?.completion || '0');
+        return {
+          id: model.id,
+          name: model.name,
+          provider: model.provider,
+          description: model.description || 'No description available',
+          capabilities: [], // Extract capabilities from API response if available
+          price: {
+            input: inputPrice * 1000, // Convert from per 1K tokens to per 1M tokens
+            output: outputPrice * 1000, // Convert from per 1K tokens to per 1M tokens
+            unit: 'm'
+          },
+          isFree: inputPrice === 0 && outputPrice === 0,
+          recommendedFor: [] // Extract recommended use cases from API response if available
+        };
+      });
       set({ models: convertedModels, filteredModels: convertedModels });
       get().applyFilters();
     } catch (error) {
@@ -229,20 +233,24 @@ async function initializeModels() {
     console.log('API response received, models count:', models.length);
     
     // Convert API response to our Model type
-    const convertedModels = models.map((model: any) => ({
-      id: model.id,
-      name: model.name,
-      provider: model.provider,
-      description: model.description || 'No description available',
-      capabilities: [], // Extract capabilities from API response if available
-      price: {
-        input: parseFloat(model.pricing?.prompt || '0'),
-        output: parseFloat(model.pricing?.completion || '0'),
-        unit: 'per 1K tokens'
-      },
-      isFree: parseFloat(model.pricing?.prompt || '0') === 0 && parseFloat(model.pricing?.completion || '0') === 0,
-      recommendedFor: [] // Extract recommended use cases from API response if available
-    }));
+    const convertedModels = models.map((model: any) => {
+      const inputPrice = parseFloat(model.pricing?.prompt || '0');
+      const outputPrice = parseFloat(model.pricing?.completion || '0');
+      return {
+        id: model.id,
+        name: model.name,
+        provider: model.provider,
+        description: model.description || 'No description available',
+        capabilities: [], // Extract capabilities from API response if available
+        price: {
+          input: inputPrice * 1000, // Convert from per 1K tokens to per 1M tokens
+          output: outputPrice * 1000, // Convert from per 1K tokens to per 1M tokens
+          unit: 'm'
+        },
+        isFree: inputPrice === 0 && outputPrice === 0,
+        recommendedFor: [] // Extract recommended use cases from API response if available
+      };
+    });
     
     console.log('Converted models count:', convertedModels.length);
     console.log('First few models:', convertedModels.slice(0, 3));
