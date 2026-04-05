@@ -259,6 +259,9 @@ const mockModels: Model[] = [
     price: { input: 5, output: 15, unit: 'm' }, // 0.005 * 1000 = 5 per 1M tokens
     isFree: false,
     recommendedFor: ['coding', 'content-creation'],
+    contextLength: 128000,
+    supportedParametersCount: 15,
+    score: 85,
   },
   {
     id: 'anthropic/claude-3-5-sonnet',
@@ -269,6 +272,9 @@ const mockModels: Model[] = [
     price: { input: 3, output: 15, unit: 'm' }, // 0.003 * 1000 = 3 per 1M tokens
     isFree: false,
     recommendedFor: ['content-creation'],
+    contextLength: 200000,
+    supportedParametersCount: 12,
+    score: 88,
   },
   {
     id: 'google/gemini-2.5-flash',
@@ -279,6 +285,9 @@ const mockModels: Model[] = [
     price: { input: 0.15, output: 0.6, unit: 'm' }, // 0.00015 * 1000 = 0.15 per 1M tokens
     isFree: false,
     recommendedFor: ['coding', 'image-generation'],
+    contextLength: 1000000,
+    supportedParametersCount: 18,
+    score: 92,
   },
   {
     id: 'meta-llama/llama-3.1-405b-instruct',
@@ -289,6 +298,9 @@ const mockModels: Model[] = [
     price: { input: 1, output: 3, unit: 'm' }, // 0.001 * 1000 = 1 per 1M tokens
     isFree: false,
     recommendedFor: ['coding', 'data-analysis'],
+    contextLength: 128000,
+    supportedParametersCount: 14,
+    score: 82,
   },
   {
     id: 'mistralai/mistral-large-latest',
@@ -299,6 +311,9 @@ const mockModels: Model[] = [
     price: { input: 2, output: 6, unit: 'm' }, // 0.002 * 1000 = 2 per 1M tokens
     isFree: false,
     recommendedFor: ['coding', 'content-creation'],
+    contextLength: 64000,
+    supportedParametersCount: 11,
+    score: 78,
   },
   {
     id: 'openai/gpt-3.5-turbo',
@@ -309,6 +324,9 @@ const mockModels: Model[] = [
     price: { input: 0.5, output: 1.5, unit: 'm' }, // 0.0005 * 1000 = 0.5 per 1M tokens
     isFree: false,
     recommendedFor: ['content-creation'],
+    contextLength: 16384,
+    supportedParametersCount: 10,
+    score: 72,
   },
   {
     id: 'google/gemini-1.5-flash-lite',
@@ -319,6 +337,9 @@ const mockModels: Model[] = [
     price: { input: 0, output: 0, unit: 'm' },
     isFree: true,
     recommendedFor: ['conversation'],
+    contextLength: 8192,
+    supportedParametersCount: 8,
+    score: 65,
   },
   {
     id: 'stabilityai/stable-diffusion-3.5-large',
@@ -329,6 +350,9 @@ const mockModels: Model[] = [
     price: { input: 10, output: 10, unit: 'm' }, // 保持原价，因为是per image
     isFree: false,
     recommendedFor: ['image-generation'],
+    contextLength: 4096,
+    supportedParametersCount: 5,
+    score: 70,
   },
 ];
 
