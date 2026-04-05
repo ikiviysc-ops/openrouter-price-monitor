@@ -11,8 +11,69 @@ function translateDescription(description: string): string {
     'No description available': '无描述可用',
   };
   
-  // Return translation if available, otherwise return original
-  return translations[description] || description;
+  // Return translation if available
+  if (translations[description]) {
+    return translations[description];
+  }
+  
+  // Basic translation for common patterns
+  let translated = description;
+  
+  // Translate common model types
+  translated = translated.replace(/Mixture-of-Experts \(MoE\)/g, '混合专家 (MoE)');
+  translated = translated.replace(/instruction-tuned/g, '指令调优');
+  translated = translated.replace(/multimodal/g, '多模态');
+  translated = translated.replace(/context window/g, '上下文窗口');
+  translated = translated.replace(/function calling/g, '函数调用');
+  translated = translated.replace(/structured output/g, '结构化输出');
+  translated = translated.replace(/token/g, 'token');
+  translated = translated.replace(/parameters/g, '参数');
+  translated = translated.replace(/inference/g, '推理');
+  translated = translated.replace(/Apache 2\.0/g, 'Apache 2.0 许可证');
+  translated = translated.replace(/license/g, '许可证');
+  translated = translated.replace(/released under/g, '以...许可证发布');
+  translated = translated.replace(/supports/g, '支持');
+  translated = translated.replace(/features/g, '具有');
+  translated = translated.replace(/strong on/g, '在...方面表现出色');
+  translated = translated.replace(/text and image input/g, '文本和图像输入');
+  translated = translated.replace(/text output/g, '文本输出');
+  translated = translated.replace(/multilingual support/g, '多语言支持');
+  translated = translated.replace(/coding/g, '编码');
+  translated = translated.replace(/reasoning/g, '推理');
+  translated = translated.replace(/document understanding/g, '文档理解');
+  translated = translated.replace(/tasks/g, '任务');
+  translated = translated.replace(/dense model/g, '密集型模型');
+  translated = translated.replace(/total parameters/g, '总参数');
+  translated = translated.replace(/activate per token/g, '每个 token 激活');
+  translated = translated.replace(/compute cost/g, '计算成本');
+  translated = translated.replace(/input modalities/g, '输入模态');
+  translated = translated.replace(/output modalities/g, '输出模态');
+  translated = translated.replace(/tokenizer/g, '分词器');
+  translated = translated.replace(/instruct type/g, '指令类型');
+  translated = translated.replace(/prompt/g, '提示');
+  translated = translated.replace(/completion/g, '完成');
+  translated = translated.replace(/context length/g, '上下文长度');
+  translated = translated.replace(/max completion tokens/g, '最大完成 token 数');
+  translated = translated.replace(/is moderated/g, '已审核');
+  translated = translated.replace(/per request limits/g, '每请求限制');
+  translated = translated.replace(/supported parameters/g, '支持的参数');
+  translated = translated.replace(/frequency penalty/g, '频率惩罚');
+  translated = translated.replace(/include reasoning/g, '包含推理');
+  translated = translated.replace(/logit bias/g, 'logit 偏差');
+  translated = translated.replace(/max tokens/g, '最大 token 数');
+  translated = translated.replace(/presence penalty/g, '存在惩罚');
+  translated = translated.replace(/repetition penalty/g, '重复惩罚');
+  translated = translated.replace(/response format/g, '响应格式');
+  translated = translated.replace(/seed/g, '种子');
+  translated = translated.replace(/stop/g, '停止');
+  translated = translated.replace(/structured outputs/g, '结构化输出');
+  translated = translated.replace(/temperature/g, '温度');
+  translated = translated.replace(/tool choice/g, '工具选择');
+  translated = translated.replace(/tools/g, '工具');
+  translated = translated.replace(/top k/g, 'top-k');
+  translated = translated.replace(/top p/g, 'top-p');
+  
+  return translated;
 }
 
 interface ModelState {
