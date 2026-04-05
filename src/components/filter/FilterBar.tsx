@@ -29,8 +29,8 @@ export function FilterBar() {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm mb-6">
-      <div className="grid grid-cols-1 gap-4">
+    <div className="p-4 space-y-6">
+      <div className="grid grid-cols-1 gap-6">
         {/* Price Range */}
         <PriceRangeSlider
           min={0}
@@ -41,34 +41,34 @@ export function FilterBar() {
 
         {/* Free Filter */}
         <div className="space-y-2">
-          <label className="text-sm font-medium">免费模型</label>
-          <div className="flex space-x-4">
+          <label className="text-sm font-medium text-white">免费模型</label>
+          <div className="flex flex-wrap gap-3">
             <button
               onClick={() => handleFreeToggle(null)}
-              className={`px-4 py-1 rounded-md text-sm transition-colors ${
+              className={`px-4 py-2 rounded-xl text-sm transition-all ${
                 filters.isFree === null
-                  ? 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300'
-                  : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  ? 'bg-white/40 text-white shadow-lg'
+                  : 'bg-white/10 text-white hover:bg-white/20'
               }`}
             >
               全部
             </button>
             <button
               onClick={() => handleFreeToggle(true)}
-              className={`px-4 py-1 rounded-md text-sm transition-colors ${
+              className={`px-4 py-2 rounded-xl text-sm transition-all ${
                 filters.isFree === true
-                  ? 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300'
-                  : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  ? 'bg-white/40 text-white shadow-lg'
+                  : 'bg-white/10 text-white hover:bg-white/20'
               }`}
             >
               免费
             </button>
             <button
               onClick={() => handleFreeToggle(false)}
-              className={`px-4 py-1 rounded-md text-sm transition-colors ${
+              className={`px-4 py-2 rounded-xl text-sm transition-all ${
                 filters.isFree === false
-                  ? 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300'
-                  : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  ? 'bg-white/40 text-white shadow-lg'
+                  : 'bg-white/10 text-white hover:bg-white/20'
               }`}
             >
               付费
@@ -84,34 +84,34 @@ export function FilterBar() {
 
         {/* Sort */}
         <div className="space-y-2">
-          <label className="text-sm font-medium">排序方式</label>
-          <div className="flex space-x-4">
+          <label className="text-sm font-medium text-white">排序方式</label>
+          <div className="flex flex-wrap gap-3">
             <button
               onClick={() => handleSortChange('price-asc')}
-              className={`px-4 py-1 rounded-md text-sm transition-colors ${
+              className={`px-4 py-2 rounded-xl text-sm transition-all ${
                 filters.sortBy === 'price-asc'
-                  ? 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300'
-                  : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  ? 'bg-white/40 text-white shadow-lg'
+                  : 'bg-white/10 text-white hover:bg-white/20'
               }`}
             >
               价格从低到高
             </button>
             <button
               onClick={() => handleSortChange('price-desc')}
-              className={`px-4 py-1 rounded-md text-sm transition-colors ${
+              className={`px-4 py-2 rounded-xl text-sm transition-all ${
                 filters.sortBy === 'price-desc'
-                  ? 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300'
-                  : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  ? 'bg-white/40 text-white shadow-lg'
+                  : 'bg-white/10 text-white hover:bg-white/20'
               }`}
             >
               价格从高到低
             </button>
             <button
               onClick={() => handleSortChange('name')}
-              className={`px-4 py-1 rounded-md text-sm transition-colors ${
+              className={`px-4 py-2 rounded-xl text-sm transition-all ${
                 filters.sortBy === 'name'
-                  ? 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300'
-                  : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  ? 'bg-white/40 text-white shadow-lg'
+                  : 'bg-white/10 text-white hover:bg-white/20'
               }`}
             >
               名称

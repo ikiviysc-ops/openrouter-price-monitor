@@ -36,34 +36,41 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
+    <div className="min-h-screen text-white">
+      <div className="bg-decoration"></div>
       <Header darkMode={darkMode} onToggleDarkMode={toggleDarkMode} />
       
       <main className="container mx-auto px-4 py-6">
-        <h1 className="text-2xl font-bold mb-6">OpenRouter模型价格监控</h1>
+        <div className="glass mx-0 mb-6 p-6 rounded-2xl">
+          <h1 className="text-2xl font-bold">OpenRouter模型价格监控</h1>
+        </div>
         
         <Tabs defaultValue="models" className="w-full" onValueChange={handleTabChange}>
-          <TabsList className="mb-6 flex overflow-x-auto">
-            <TabsTrigger value="models" className="flex-shrink-0">
-              模型列表 <span className="ml-2 bg-gray-200 dark:bg-gray-700 px-2 py-0.5 rounded-full text-xs">{models.length}</span>
-            </TabsTrigger>
-            <TabsTrigger value="free" className="flex-shrink-0">
-              免费模型 <span className="ml-2 bg-gray-200 dark:bg-gray-700 px-2 py-0.5 rounded-full text-xs">{models.filter(m => m.isFree).length}</span>
-            </TabsTrigger>
-            <TabsTrigger value="recommendations" className="flex-shrink-0">
-              推荐模型 <span className="ml-2 bg-gray-200 dark:bg-gray-700 px-2 py-0.5 rounded-full text-xs">{models.length}</span>
-            </TabsTrigger>
-          </TabsList>
+          <div className="glass p-2 mb-6 rounded-2xl">
+            <TabsList className="flex overflow-x-auto w-full gap-2">
+              <TabsTrigger value="models" className="flex-shrink-0 bg-white/20 hover:bg-white/30 data-[state=active]:bg-white/40 text-white">
+                模型列表 <span className="ml-2 bg-white/30 px-2 py-0.5 rounded-full text-xs">{models.length}</span>
+              </TabsTrigger>
+              <TabsTrigger value="free" className="flex-shrink-0 bg-white/20 hover:bg-white/30 data-[state=active]:bg-white/40 text-white">
+                免费模型 <span className="ml-2 bg-white/30 px-2 py-0.5 rounded-full text-xs">{models.filter(m => m.isFree).length}</span>
+              </TabsTrigger>
+              <TabsTrigger value="recommendations" className="flex-shrink-0 bg-white/20 hover:bg-white/30 data-[state=active]:bg-white/40 text-white">
+                推荐模型 <span className="ml-2 bg-white/30 px-2 py-0.5 rounded-full text-xs">{models.length}</span>
+              </TabsTrigger>
+            </TabsList>
+          </div>
           
           <TabsContent value="models" className="space-y-6">
-            <FilterBar />
+            <div className="glass p-4 rounded-2xl">
+              <FilterBar />
+            </div>
             <ModelList />
           </TabsContent>
           
           <TabsContent value="free" className="space-y-6">
-            <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+            <div className="glass p-6 rounded-2xl mb-6">
               <h3 className="text-lg font-semibold mb-4">免费模型</h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-4">
+              <p className="text-white/80">
                 以下是当前可用的免费模型，适合简单任务和快速响应。
               </p>
             </div>

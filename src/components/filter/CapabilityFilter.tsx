@@ -17,16 +17,16 @@ const capabilities: { value: Capability; label: string }[] = [
 export function CapabilityFilter({ selectedCapabilities, onToggleCapability }: CapabilityFilterProps) {
   return (
     <div className="space-y-2">
-      <label className="text-sm font-medium">技能分类</label>
+      <label className="text-sm font-medium text-white">技能分类</label>
       <div className="flex flex-wrap gap-2">
         {capabilities.map((capability) => (
           <button
             key={capability.value}
             onClick={() => onToggleCapability(capability.value)}
-            className={`px-3 py-1 rounded-full text-sm transition-colors ${
+            className={`px-3 py-1.5 rounded-full text-sm transition-all ${
               selectedCapabilities.includes(capability.value)
-                ? 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300'
-                : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                ? 'bg-white/40 text-white shadow-lg'
+                : 'bg-white/10 text-white hover:bg-white/20'
             }`}
           >
             {capability.label}

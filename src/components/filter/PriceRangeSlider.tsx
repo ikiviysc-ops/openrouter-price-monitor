@@ -32,8 +32,8 @@ export function PriceRangeSlider({ min, max, value, onChange }: PriceRangeSlider
   };
 
   return (
-    <div className="space-y-2">
-      <label className="text-sm font-medium">价格范围</label>
+    <div className="space-y-3">
+      <label className="text-sm font-medium text-white">价格范围</label>
       <div className="flex items-center space-x-4">
         <input
           type="number"
@@ -43,10 +43,10 @@ export function PriceRangeSlider({ min, max, value, onChange }: PriceRangeSlider
           onBlur={handleSubmit}
           min={min}
           max={max}
-          className="w-20 px-3 py-1 border rounded-md text-sm"
+          className="w-24 px-3 py-2 rounded-xl bg-white/20 border border-white/30 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/40"
           placeholder="最小值"
         />
-        <span>至</span>
+        <span className="text-white">至</span>
         <input
           type="number"
           name="max"
@@ -55,10 +55,10 @@ export function PriceRangeSlider({ min, max, value, onChange }: PriceRangeSlider
           onBlur={handleSubmit}
           min={min}
           max={max}
-          className="w-20 px-3 py-1 border rounded-md text-sm"
+          className="w-24 px-3 py-2 rounded-xl bg-white/20 border border-white/30 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/40"
           placeholder="最大值"
         />
-        <span className="text-sm text-gray-500">美元/千 tokens</span>
+        <span className="text-sm text-white/70">美元/千 tokens</span>
       </div>
       <input
         type="range"
@@ -71,7 +71,7 @@ export function PriceRangeSlider({ min, max, value, onChange }: PriceRangeSlider
           setLocalValue([newMin, newMax]);
           onChange([newMin, newMax]);
         }}
-        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+        className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer accent-white/70"
       />
     </div>
   );

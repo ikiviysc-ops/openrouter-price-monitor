@@ -83,31 +83,35 @@ export function RecommendationPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <h1 className="text-2xl font-bold mb-6">推荐模型</h1>
+    <div className="px-0 py-0">
+      <div className="glass p-6 rounded-2xl mb-6">
+        <h1 className="text-2xl font-bold text-white">推荐模型</h1>
+      </div>
       
       <Tabs 
         defaultValue="coding" 
         className="w-full"
         onValueChange={setActiveCategory}
       >
-        <TabsList className="mb-6 flex overflow-x-auto flex-wrap gap-2">
-          {categories.map((category) => {
-            const categoryModels = getCategoryModels(category.capability);
-            return (
-              <TabsTrigger 
-                key={category.id} 
-                value={category.id} 
-                className="flex-shrink-0"
-              >
-                {category.title}
-                <span className="ml-2 bg-gray-200 dark:bg-gray-700 px-2 py-0.5 rounded-full text-xs">
-                  {categoryModels.length}
-                </span>
-              </TabsTrigger>
-            );
-          })}
-        </TabsList>
+        <div className="glass p-2 mb-6 rounded-2xl">
+          <TabsList className="flex overflow-x-auto flex-wrap gap-2 w-full">
+            {categories.map((category) => {
+              const categoryModels = getCategoryModels(category.capability);
+              return (
+                <TabsTrigger 
+                  key={category.id} 
+                  value={category.id} 
+                  className="flex-shrink-0 bg-white/20 hover:bg-white/30 data-[state=active]:bg-white/40 text-white"
+                >
+                  {category.title}
+                  <span className="ml-2 bg-white/30 px-2 py-0.5 rounded-full text-xs">
+                    {categoryModels.length}
+                  </span>
+                </TabsTrigger>
+              );
+            })}
+          </TabsList>
+        </div>
         
         {categories.map((category) => {
           const categoryModels = getCategoryModels(category.capability);
@@ -121,8 +125,8 @@ export function RecommendationPage() {
                   models={categoryModels}
                 />
               ) : (
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-lg text-center">
-                  <p className="text-gray-500 dark:text-gray-400">
+                <div className="glass p-6 rounded-2xl text-center">
+                  <p className="text-white/70">
                     暂无该类别的模型推荐
                   </p>
                 </div>

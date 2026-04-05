@@ -58,57 +58,63 @@ export function ModelCard({ model }: ModelCardProps) {
   };
 
   return (
-    <Card className="w-full">
-      <CardHeader className="pb-3">
+    <div className="w-full glass-card">
+      <div className="pb-3 px-4 pt-4">
         <div className="flex justify-between items-start">
           <div>
-            <CardTitle className="text-lg">{model.name}</CardTitle>
-            <CardDescription className="text-sm mt-1">{model.provider}</CardDescription>
+            <h3 className="text-lg font-medium text-white">{model.name}</h3>
+            <p className="text-sm mt-1 text-white/70">{model.provider}</p>
           </div>
           {model.isFree && (
-            <Badge variant="default" className="bg-green-500 hover:bg-green-600">
+            <Badge variant="default" className="bg-green-500/80 hover:bg-green-600 border-transparent">
               免费
             </Badge>
           )}
         </div>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <p className="text-sm text-muted-foreground">
+      </div>
+      <div className="px-4 pb-4 space-y-4">
+        <p className="text-sm text-white/80">
           {model.description}
         </p>
         
         {model.capabilities.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {model.capabilities.slice(0, 5).map((capability) => (
-              <Badge key={capability} variant={getCapabilityVariant(capability)}>
+              <Badge 
+                key={capability} 
+                variant={getCapabilityVariant(capability) === 'default' ? 'default' : 'outline'}
+                className={getCapabilityVariant(capability) === 'default' 
+                  ? 'bg-white/30 text-white border-transparent' 
+                  : 'bg-white/10 text-white border-white/20'}
+              >
                 {getCapabilityLabel(capability)}
               </Badge>
             ))}
             {model.capabilities.length > 5 && (
-              <Badge variant="ghost">
+              <Badge variant="ghost" className="text-white/70">
                 +{model.capabilities.length - 5}
               </Badge>
             )}
           </div>
         )}
         
-        <div className="pt-3 border-t">
+        <div className="pt-3 border-t border-white/20">
           <div className="flex justify-between items-center">
             <div className="text-sm">
-              <span className="text-muted-foreground">输入:</span>
-              <span className="text-foreground font-medium ml-1">
+              <span className="text-white/60">输入:</span>
+              <span className="text-white font-medium ml-1">
                 ${parseFloat(model.price.input.toString()).toFixed(4).replace(/\.?0+$/, '')} m
               </span>
             </div>
             <div className="text-sm">
-              <span className="text-muted-foreground">上下文:</span>
-              <span className="text-foreground font-medium ml-1">
+              <span className="text-white/60">上下文:</span>
+              <span className="text-white font-medium ml-1">
                 {formatContextLength(model.contextLength)}
               </span>
             </div>
             <div className="text-sm">
-              <span className="text-muted-foreground">输出:</span>
-              <span className="text-foreground font-medium ml-1">
+              <span className="text-white/60">输出:</span>
+              <span className="text-white font-medium ml-1">
                 ${parseFloat(model.price.output.toString()).toFixed(4).replace(/\.?0+$/, '')} m
               </span>
             </div>
@@ -117,17 +123,17 @@ export function ModelCard({ model }: ModelCardProps) {
         
         {model.recommendedFor.length > 0 && (
           <div>
-            <p className="text-xs text-muted-foreground mb-2">推荐用于:</p>
+            <p className="text-xs text-white/60 mb-2">推荐用于:</p>
             <div className="flex flex-wrap gap-2">
               {model.recommendedFor.map((useCase) => (
-                <Badge key={useCase} variant="outline">
+                <Badge key={useCase} variant="outline" className="bg-white/10 text-white border-white/20">
                   {getCapabilityLabel(useCase)}
                 </Badge>
               ))}
             </div>
           </div>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
