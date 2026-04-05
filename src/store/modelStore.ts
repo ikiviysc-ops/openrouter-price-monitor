@@ -19,7 +19,16 @@ function translateDescription(description: string): string {
   // Basic translation for common patterns
   let translated = description;
   
-  // Translate common model types
+  // Translate sentence structures
+  translated = translated.replace(/(.+) is a (.+) model from (.+)\./g, '$1 是 $3 开发的 $2 模型。');
+  translated = translated.replace(/(.+) is (.+)'s (.+) model\./g, '$1 是 $2 的 $3 模型。');
+  translated = translated.replace(/Supports (.+)\./g, '支持 $1。');
+  translated = translated.replace(/Features (.+)\./g, '具有 $1。');
+  translated = translated.replace(/Strong on (.+) tasks\./g, '在 $1 任务上表现出色。');
+  translated = translated.replace(/Released under (.+)\./g, '以 $1 许可证发布。');
+  translated = translated.replace(/(.+) license\./g, '$1 许可证。');
+  
+  // Translate common model types and terms
   translated = translated.replace(/Mixture-of-Experts \(MoE\)/g, '混合专家 (MoE)');
   translated = translated.replace(/instruction-tuned/g, '指令调优');
   translated = translated.replace(/multimodal/g, '多模态');
@@ -29,9 +38,8 @@ function translateDescription(description: string): string {
   translated = translated.replace(/token/g, 'token');
   translated = translated.replace(/parameters/g, '参数');
   translated = translated.replace(/inference/g, '推理');
-  translated = translated.replace(/Apache 2\.0/g, 'Apache 2.0 许可证');
+  translated = translated.replace(/Apache 2\.0/g, 'Apache 2.0');
   translated = translated.replace(/license/g, '许可证');
-  translated = translated.replace(/released under/g, '以...许可证发布');
   translated = translated.replace(/supports/g, '支持');
   translated = translated.replace(/features/g, '具有');
   translated = translated.replace(/strong on/g, '在...方面表现出色');
@@ -72,6 +80,17 @@ function translateDescription(description: string): string {
   translated = translated.replace(/tools/g, '工具');
   translated = translated.replace(/top k/g, 'top-k');
   translated = translated.replace(/top p/g, 'top-p');
+  translated = translated.replace(/Despite/g, '尽管');
+  translated = translated.replace(/only/g, '只');
+  translated = translated.replace(/delivering/g, '提供');
+  translated = translated.replace(/at a fraction of/g, '以更低的');
+  translated = translated.replace(/including/g, '包括');
+  translated = translated.replace(/up to/g, '最多');
+  translated = translated.replace(/native/g, '原生');
+  translated = translated.replace(/configurable/g, '可配置的');
+  translated = translated.replace(/thinking\/reasoning mode/g, '思考/推理模式');
+  translated = translated.replace(/support/g, '支持');
+  translated = translated.replace(/across/g, '跨越');
   
   return translated;
 }
