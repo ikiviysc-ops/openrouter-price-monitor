@@ -1,57 +1,149 @@
-# React + TypeScript + Vite
+# OpenRouter 模型价格监控
 
-这个模板提供了一个最小化的设置，让 React 在 Vite 中运行，支持热模块替换 (HMR) 和一些 ESLint 规则。
+一个美观、高效的 OpenRouter 模型价格监控工具，帮助您快速了解和比较各种 AI 模型的价格、能力和性能。
 
-目前有两个官方插件可用：
+## 🚀 在线预览
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) 使用 [Babel](https://babeljs.io/) 实现快速刷新
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) 使用 [SWC](https://swc.rs/) 实现快速刷新
+**项目已部署在线，您可以直接访问：**
 
-## 扩展 ESLint 配置
+[OpenRouter 模型价格监控](https://openrouter-model-monitor.vercel.app/)
 
-如果你正在开发生产应用，我们建议更新配置以启用类型感知的 lint 规则：
+## ✨ 主要功能
 
-```js
-export default tseslint.config({
-  extends: [
-    // 移除 ...tseslint.configs.recommended 并替换为以下内容
-    ...tseslint.configs.recommendedTypeChecked,
-    // 或者，使用这个获取更严格的规则
-    ...tseslint.configs.strictTypeChecked,
-    // 可选，添加这个获取风格规则
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // 其他选项...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- **实时模型数据**：从 OpenRouter API 获取最新的模型信息
+- **价格比较**：以百万 token 为单位显示价格，方便比较
+- **模型分类**：按技能分类展示模型（写代码、内容创作、图像生成等）
+- **综合评分**：基于价格、能力、上下文长度等因素的综合评分
+- **毛玻璃效果**：现代化的毛玻璃 UI 设计
+- **响应式布局**：适配各种屏幕尺寸
+- **一键返回顶部**：方便长页面浏览
+- **免费模型筛选**：快速找到免费可用的模型
+
+## 🛠 技术栈
+
+- **前端框架**：React + TypeScript
+- **构建工具**：Vite
+- **状态管理**：Zustand
+- **UI 组件**：shadcn/ui
+- **样式**：Tailwind CSS
+- **图标**：Lucide React
+- **API**：OpenRouter API
+
+## 📦 安装和运行
+
+### 前置条件
+
+- Node.js 18+ 
+- npm 或 yarn
+
+### 安装依赖
+
+```bash
+npm install
+# 或
+yarn install
 ```
 
-你还可以安装 [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) 和 [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) 来获取 React 特定的 lint 规则：
+### 开发模式
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  extends: [
-    // 其他配置...
-    // 启用 React 的 lint 规则
-    reactX.configs['recommended-typescript'],
-    // 启用 React DOM 的 lint 规则
-    reactDom.configs.recommended,
-  ],
-  languageOptions: {
-    // 其他选项...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+npm run dev
+# 或
+yarn dev
 ```
+
+### 构建生产版本
+
+```bash
+npm run build
+# 或
+yarn build
+```
+
+### 预览生产构建
+
+```bash
+npm run preview
+# 或
+yarn preview
+```
+
+## 📁 项目结构
+
+```
+src/
+├── components/
+│   ├── filter/         # 筛选组件
+│   ├── layout/         # 布局组件
+│   ├── model/          # 模型相关组件
+│   ├── recommendation/ # 推荐相关组件
+│   └── ui/             # 通用 UI 组件
+├── lib/
+│   ├── api.ts          # API 调用
+│   └── models.json     # 模型数据缓存
+├── pages/
+│   ├── Home.tsx        # 首页
+│   └── RecommendationPage.tsx # 推荐页面
+├── store/
+│   └── modelStore.ts   # 模型状态管理
+├── types/
+│   └── index.ts        # TypeScript 类型定义
+├── App.tsx             # 应用主组件
+└── main.tsx            # 应用入口
+```
+
+## 🌟 特色功能
+
+### 毛玻璃 UI 设计
+现代化的毛玻璃效果，提供沉浸式的视觉体验，让界面更加美观和专业。
+
+### 智能推荐系统
+基于以下因素综合评分推荐模型：
+- 价格（越低越好）
+- 能力（支持的技能越多越好）
+- 上下文长度（越长越好）
+- 支持的参数数量
+- 是否免费
+- 模型新鲜度
+
+### 实时数据
+通过 OpenRouter API 获取最新的模型数据，确保信息的准确性和时效性。
+
+### 响应式设计
+完美适配桌面端、平板和移动设备，提供一致的用户体验。
+
+## 📚 如何使用
+
+1. **浏览模型列表**：查看所有可用的模型，按价格或名称排序
+2. **筛选免费模型**：快速找到免费可用的模型
+3. **查看推荐**：按技能分类查看推荐模型，每个类别显示评分最高的 10 个模型
+4. **比较价格**：以百万 token 为单位比较不同模型的价格
+5. **查看能力**：了解每个模型支持的技能和特性
+
+## 🔄 数据更新
+
+- 应用启动时自动从 OpenRouter API 获取最新模型数据
+- 点击页面顶部的「刷新」按钮手动更新数据
+- 数据获取失败时使用本地缓存作为 fallback
+
+## 🤝 贡献
+
+欢迎贡献代码、报告问题或提出建议！
+
+1. Fork 仓库
+2. 创建功能分支
+3. 提交更改
+4. 推送到分支
+5. 打开 Pull Request
+
+## 📄 许可证
+
+MIT License
+
+## 📞 联系方式
+
+如果您有任何问题或建议，欢迎联系我们。
+
+---
+
+**享受使用 OpenRouter 模型价格监控工具！** 🎉
