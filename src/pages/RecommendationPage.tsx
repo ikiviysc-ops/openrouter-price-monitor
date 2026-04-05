@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { useModelStore } from '../store/modelStore';
 import { RecommendationCard } from '../components/recommendation/RecommendationCard';
-import { Recommendation } from '../types';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 
 export function RecommendationPage() {
   const { models } = useModelStore();
+  const [activeCategory, setActiveCategory] = useState('coding');
 
   // Define recommendation categories
   const categories = [
@@ -69,51 +71,66 @@ export function RecommendationPage() {
     }
   ];
 
-  // Generate recommendations based on score
-  const recommendations: Recommendation[] = categories.map(category => {
-    // Filter models by capability
+  // Get models for a specific category
+  const getCategoryModels = (capability: string) => {
     const filteredModels = models.filter(model => 
-      model.capabilities.includes(category.capability)
+      model.capabilities.includes(capability)
     );
     
-    // Sort by score (descending)
-    const sortedModels = [...filteredModels].sort((a, b) => 
+    return [...filteredModels].sort((a, b) => 
       (b.score || 0) - (a.score || 0)
-    );
-    
-    // Get top 10 models
-    const topModels = sortedModels.slice(0, 10);
-    
-    return {
-      id: category.id,
-      title: category.title,
-      description: category.description,
-      modelIds: topModels.map(model => model.id)
-    };
-  });
+    ).slice(0, 10);
+  };
 
   return (
     <div className="container mx-auto px-4 py-6">
       <h1 className="text-2xl font-bold mb-6">推荐模型</h1>
-      <div className="grid grid-cols-1 gap-6">
-        {recommendations.map((recommendation) => {
-          const recommendedModels = recommendation.modelIds
-            .map((id) => models.find((model) => model.id === id))
-            .filter((model): model is NonNullable<typeof model> => model !== undefined);
-
-          // Only show if there are models available
-          if (recommendedModels.length === 0) return null;
-
+      
+      <Tabs 
+        defaultValue="coding" 
+        className="w-full"
+        onValueChange={setActiveCategory}
+      >
+        <TabsList className="mb-6 flex overflow-x-auto flex-wrap gap-2">
+          {categories.map((category) => {
+            const categoryModels = getCategoryModels(category.capability);
+            return (
+              <TabsTrigger 
+                key={category.id} 
+                value={category.id} 
+                className="flex-shrink-0"
+              >
+                {category.title}
+                <span className="ml-2 bg-gray-200 dark:bg-gray-700 px-2 py-0.5 rounded-full text-xs">
+                  {categoryModels.length}
+                </span>
+              </TabsTrigger>
+            );
+          })}
+        </TabsList>
+        
+        {categories.map((category) => {
+          const categoryModels = getCategoryModels(category.capability);
+          
           return (
-            <RecommendationCard
-              key={recommendation.id}
-              title={recommendation.title}
-              description={recommendation.description}
-              models={recommendedModels}
-            />
+            <TabsContent key={category.id} value={category.id}>
+              {categoryModels.length > 0 ? (
+                <RecommendationCard
+                  title={category.title}
+                  description={category.description}
+                  models={categoryModels}
+                />
+              ) : (
+                <div className="bg-white dark:bg-gray-800 p-6 rounded-lg text-center">
+                  <p className="text-gray-500 dark:text-gray-400">
+                    暂无该类别的模型推荐
+                  </p>
+                </div>
+              )}
+            </TabsContent>
           );
         })}
-      </div>
+      </Tabs>
     </div>
   );
 }
