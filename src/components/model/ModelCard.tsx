@@ -50,13 +50,13 @@ export function ModelCard({ model }: ModelCardProps) {
           <div className="text-sm">
             <span className="text-gray-600 dark:text-gray-400">输入:</span>
             <span className="text-gray-900 dark:text-white font-medium ml-1">
-              ${model.price.input.toFixed(4)} {model.price.unit}
+              ${model.price.input.toFixed(4)} m
             </span>
           </div>
           <div className="text-sm">
             <span className="text-gray-600 dark:text-gray-400">输出:</span>
             <span className="text-gray-900 dark:text-white font-medium ml-1">
-              ${model.price.output.toFixed(4)} {model.price.unit}
+              ${model.price.output.toFixed(4)} m
             </span>
           </div>
         </div>

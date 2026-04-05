@@ -9,7 +9,7 @@ import { useModelStore } from './store/modelStore';
 
 function App() {
   const [darkMode, setDarkMode] = useState<boolean>(false);
-  const { setActiveTab } = useModelStore();
+  const { setActiveTab, models, filteredModels, activeTab } = useModelStore();
 
   // 检查系统主题偏好
   useEffect(() => {
@@ -44,9 +44,15 @@ function App() {
         
         <Tabs defaultValue="models" className="w-full" onValueChange={handleTabChange}>
           <TabsList className="mb-6 flex overflow-x-auto">
-            <TabsTrigger value="models" className="flex-shrink-0">模型列表</TabsTrigger>
-            <TabsTrigger value="free" className="flex-shrink-0">免费模型</TabsTrigger>
-            <TabsTrigger value="recommendations" className="flex-shrink-0">推荐模型</TabsTrigger>
+            <TabsTrigger value="models" className="flex-shrink-0">
+              模型列表 <span className="ml-2 bg-gray-200 dark:bg-gray-700 px-2 py-0.5 rounded-full text-xs">{models.length}</span>
+            </TabsTrigger>
+            <TabsTrigger value="free" className="flex-shrink-0">
+              免费模型 <span className="ml-2 bg-gray-200 dark:bg-gray-700 px-2 py-0.5 rounded-full text-xs">{models.filter(m => m.isFree).length}</span>
+            </TabsTrigger>
+            <TabsTrigger value="recommendations" className="flex-shrink-0">
+              推荐模型 <span className="ml-2 bg-gray-200 dark:bg-gray-700 px-2 py-0.5 rounded-full text-xs">{models.length}</span>
+            </TabsTrigger>
           </TabsList>
           
           <TabsContent value="models" className="space-y-6">
