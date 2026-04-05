@@ -202,8 +202,8 @@ export const useModelStore = create<ModelState>((set, get) => ({
           description: model.description || 'No description available',
           capabilities: [], // Extract capabilities from API response if available
           price: {
-            input: inputPrice * 1000, // Convert from per 1K tokens to per 1M tokens
-            output: outputPrice * 1000, // Convert from per 1K tokens to per 1M tokens
+            input: inputPrice * 1000000, // Convert from per token to per 1M tokens
+            output: outputPrice * 1000000, // Convert from per token to per 1M tokens
             unit: 'm'
           },
           isFree: inputPrice === 0 && outputPrice === 0,
@@ -243,8 +243,8 @@ async function initializeModels() {
         description: model.description || 'No description available',
         capabilities: [], // Extract capabilities from API response if available
         price: {
-          input: inputPrice * 1000, // Convert from per 1K tokens to per 1M tokens
-          output: outputPrice * 1000, // Convert from per 1K tokens to per 1M tokens
+          input: inputPrice * 1000000, // Convert from per token to per 1M tokens
+          output: outputPrice * 1000000, // Convert from per token to per 1M tokens
           unit: 'm'
         },
         isFree: inputPrice === 0 && outputPrice === 0,
