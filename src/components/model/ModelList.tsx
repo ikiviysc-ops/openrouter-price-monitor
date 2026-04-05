@@ -4,6 +4,10 @@ import { ModelCard } from './ModelCard';
 export function ModelList() {
   const { filteredModels, isLoading, error } = useModelStore();
 
+  console.log('ModelList - filteredModels:', filteredModels);
+  console.log('ModelList - isLoading:', isLoading);
+  console.log('ModelList - error:', error);
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center py-10">

@@ -188,4 +188,7 @@ export const useModelStore = create<ModelState>((set, get) => ({
 }));
 
 // Initialize with mock data
-useModelStore.getState().applyFilters();
+console.log('Initializing model store with mock data:', mockModels);
+const store = useModelStore.getState();
+store.applyFilters();
+console.log('Initial filtered models:', store.filteredModels);
