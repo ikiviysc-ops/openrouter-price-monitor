@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
+import { BackToTop } from './components/layout/BackToTop';
 import { FilterBar } from './components/filter/FilterBar';
 import { ModelList } from './components/model/ModelList';
 import { RecommendationPage } from './pages/RecommendationPage';
@@ -84,6 +85,7 @@ function App() {
       </main>
       
       <Footer />
+      <BackToTop />
     </div>
   );
 }
