@@ -45,6 +45,18 @@ export function ModelCard({ model }: ModelCardProps) {
     return variants[capability] || 'secondary';
   };
 
+  // Format context length for display
+  const formatContextLength = (length?: number): string => {
+    if (!length) return '未知';
+    if (length >= 1000000) {
+      return `${(length / 1000000).toFixed(1)}M`;
+    }
+    if (length >= 1000) {
+      return `${(length / 1000).toFixed(1)}K`;
+    }
+    return length.toString();
+  };
+
   return (
     <Card className="w-full">
       <CardHeader className="pb-3">
@@ -86,6 +98,12 @@ export function ModelCard({ model }: ModelCardProps) {
               <span className="text-muted-foreground">输入:</span>
               <span className="text-foreground font-medium ml-1">
                 ${parseFloat(model.price.input.toString()).toFixed(4).replace(/\.?0+$/, '')} m
+              </span>
+            </div>
+            <div className="text-sm">
+              <span className="text-muted-foreground">上下文:</span>
+              <span className="text-foreground font-medium ml-1">
+                {formatContextLength(model.contextLength)}
               </span>
             </div>
             <div className="text-sm">

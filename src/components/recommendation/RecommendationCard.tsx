@@ -9,6 +9,18 @@ interface RecommendationCardProps {
 }
 
 export function RecommendationCard({ title, description, models }: RecommendationCardProps) {
+  // Format context length for display
+  const formatContextLength = (length?: number): string => {
+    if (!length) return '未知';
+    if (length >= 1000000) {
+      return `${(length / 1000000).toFixed(1)}M`;
+    }
+    if (length >= 1000) {
+      return `${(length / 1000).toFixed(1)}K`;
+    }
+    return length.toString();
+  };
+
   return (
     <Card className="overflow-hidden">
       <CardHeader>
@@ -32,6 +44,9 @@ export function RecommendationCard({ title, description, models }: Recommendatio
                         评分: {model.score.toFixed(1)}
                       </Badge>
                     )}
+                    <Badge variant="ghost" className="text-xs">
+                      上下文: {formatContextLength(model.contextLength)}
+                    </Badge>
                   </div>
                 </div>
               </div>
