@@ -273,7 +273,6 @@ function translateDescription(description: string): string {
     'five': '五',
     'days': '天',
     'launch': '发布',
-    'video': '视频',
     'effort': '努力',
     'behavior': '行为',
     'low': '低',
