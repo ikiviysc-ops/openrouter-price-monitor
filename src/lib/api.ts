@@ -22,7 +22,11 @@ export async function fetchOpenRouterModels() {
       name: model.name,
       provider: model.id.split('/')[0],
       description: model.description || 'No description available',
-      pricing: model.pricing
+      pricing: model.pricing,
+      context_length: model.context_length,
+      architecture: model.architecture,
+      supported_parameters: model.supported_parameters,
+      created: model.created
     }));
     
     console.log('Simplified models count:', simplifiedModels.length);
@@ -40,7 +44,11 @@ export async function fetchOpenRouterModels() {
       name: model.name,
       provider: model.id.split('/')[0],
       description: model.description || 'No description available',
-      pricing: model.pricing
+      pricing: model.pricing,
+      context_length: model.context_length,
+      architecture: model.architecture,
+      supported_parameters: model.supported_parameters,
+      created: model.created
     }));
     
     console.log('Simplified models count:', simplifiedModels.length);
@@ -71,7 +79,11 @@ export async function refreshOpenRouterModels() {
       name: model.name,
       provider: model.id.split('/')[0],
       description: model.description || 'No description available',
-      pricing: model.pricing
+      pricing: model.pricing,
+      context_length: model.context_length,
+      architecture: model.architecture,
+      supported_parameters: model.supported_parameters,
+      created: model.created
     }));
     
     console.log('Simplified models count:', simplifiedModels.length);
