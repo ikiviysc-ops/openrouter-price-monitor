@@ -20,7 +20,20 @@ export interface FilterOptions {
   sortBy: 'price-asc' | 'price-desc' | 'name';
 }
 
-export type Capability = 'coding' | 'content-creation' | 'image-generation' | 'conversation' | 'translation' | 'data-analysis';
+export type Capability = 
+  | 'coding' 
+  | 'content-creation' 
+  | 'image-generation' 
+  | 'conversation' 
+  | 'translation' 
+  | 'data-analysis'
+  | 'image-understanding'
+  | 'video-generation'
+  | 'video-understanding'
+  | 'tool-use'
+  | 'structured-output'
+  | 'reasoning'
+  | 'multimodal';
 
 export interface Recommendation {
   id: string;

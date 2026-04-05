@@ -95,6 +95,69 @@ function translateDescription(description: string): string {
   return translated;
 }
 
+// Extract capabilities from model data
+function extractCapabilities(model: any): string[] {
+  const capabilities: string[] = [];
+  
+  // Check architecture modality
+  if (model.architecture?.modality) {
+    const modality = model.architecture.modality;
+    if (modality.includes('image')) {
+      capabilities.push('image-generation');
+    }
+    if (modality.includes('video')) {
+      capabilities.push('video-generation');
+    }
+  }
+  
+  // Check input/output modalities
+  if (model.architecture?.input_modalities) {
+    if (model.architecture.input_modalities.includes('image')) {
+      capabilities.push('image-understanding');
+    }
+    if (model.architecture.input_modalities.includes('video')) {
+      capabilities.push('video-understanding');
+    }
+  }
+  
+  // Check supported parameters
+  if (model.supported_parameters) {
+    if (model.supported_parameters.includes('tools') || model.supported_parameters.includes('tool_choice')) {
+      capabilities.push('tool-use');
+    }
+    if (model.supported_parameters.includes('structured_outputs') || model.supported_parameters.includes('response_format')) {
+      capabilities.push('structured-output');
+    }
+    if (model.supported_parameters.includes('reasoning') || model.supported_parameters.includes('include_reasoning')) {
+      capabilities.push('reasoning');
+    }
+  }
+  
+  // Check description for keywords
+  const description = model.description?.toLowerCase() || '';
+  if (description.includes('coding') || description.includes('code')) {
+    capabilities.push('coding');
+  }
+  if (description.includes('content') || description.includes('writing')) {
+    capabilities.push('content-creation');
+  }
+  if (description.includes('conversation') || description.includes('chat')) {
+    capabilities.push('conversation');
+  }
+  if (description.includes('translation') || description.includes('translate')) {
+    capabilities.push('translation');
+  }
+  if (description.includes('data') || description.includes('analysis')) {
+    capabilities.push('data-analysis');
+  }
+  if (description.includes('multimodal')) {
+    capabilities.push('multimodal');
+  }
+  
+  // Remove duplicates
+  return [...new Set(capabilities)];
+}
+
 interface ModelState {
   models: Model[];
   filteredModels: Model[];
@@ -293,7 +356,7 @@ export const useModelStore = create<ModelState>((set, get) => ({
           name: model.name,
           provider: model.provider,
           description: translateDescription(model.description || 'No description available'),
-          capabilities: [], // Extract capabilities from API response if available
+          capabilities: extractCapabilities(model),
           price: {
             input: inputPrice * 1000000, // Convert from per token to per 1M tokens
             output: outputPrice * 1000000, // Convert from per token to per 1M tokens
@@ -334,7 +397,7 @@ async function initializeModels() {
         name: model.name,
         provider: model.provider,
         description: translateDescription(model.description || 'No description available'),
-        capabilities: [], // Extract capabilities from API response if available
+        capabilities: extractCapabilities(model),
         price: {
           input: inputPrice * 1000000, // Convert from per token to per 1M tokens
           output: outputPrice * 1000000, // Convert from per token to per 1M tokens
