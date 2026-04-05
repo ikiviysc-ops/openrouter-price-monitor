@@ -11,6 +11,9 @@ export interface Model {
   };
   isFree: boolean;
   recommendedFor: string[];
+  score?: number; // 综合评分
+  contextLength?: number; // 上下文长度
+  supportedParametersCount?: number; // 支持的参数数量
 }
 
 export interface FilterOptions {

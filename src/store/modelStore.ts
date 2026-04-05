@@ -158,6 +158,49 @@ function extractCapabilities(model: any): string[] {
   return [...new Set(capabilities)];
 }
 
+// Calculate comprehensive score for a model
+function calculateScore(model: any, capabilities: string[]): number {
+  let score = 0;
+  
+  // 1. Price score (inverse - lower price = higher score)
+  const inputPrice = parseFloat(model.pricing?.prompt || '0');
+  const outputPrice = parseFloat(model.pricing?.completion || '0');
+  const avgPrice = (inputPrice + outputPrice) / 2;
+  const priceScore = avgPrice === 0 ? 100 : Math.max(0, 100 - (avgPrice * 10000000)); // 价格越低得分越高
+  
+  // 2. Capabilities score
+  const capabilitiesScore = Math.min(100, capabilities.length * 10); // 每个能力10分，最高100分
+  
+  // 3. Context length score
+  const contextLength = model.context_length || 0;
+  const contextScore = Math.min(100, Math.log10(contextLength + 1) * 20); // 对数 scale
+  
+  // 4. Supported parameters score
+  const supportedParamsCount = model.supported_parameters?.length || 0;
+  const paramsScore = Math.min(100, supportedParamsCount * 5); // 每个参数5分，最高100分
+  
+  // 5. Free model bonus
+  const freeBonus = (inputPrice === 0 && outputPrice === 0) ? 20 : 0;
+  
+  // 6. Recency score (based on creation date)
+  const created = model.created || 0;
+  const now = Math.floor(Date.now() / 1000);
+  const daysSinceCreation = (now - created) / (24 * 3600);
+  const recencyScore = Math.max(0, 100 - (daysSinceCreation * 0.5)); // 每天减少0.5分
+  
+  // Weighted average
+  score = (
+    priceScore * 0.3 +
+    capabilitiesScore * 0.25 +
+    contextScore * 0.2 +
+    paramsScore * 0.15 +
+    freeBonus +
+    recencyScore * 0.1
+  );
+  
+  return Math.min(100, Math.max(0, score));
+}
+
 interface ModelState {
   models: Model[];
   filteredModels: Model[];
@@ -351,19 +394,24 @@ export const useModelStore = create<ModelState>((set, get) => ({
       const convertedModels = models.map((model: any) => {
         const inputPrice = parseFloat(model.pricing?.prompt || '0');
         const outputPrice = parseFloat(model.pricing?.completion || '0');
+        const capabilities = extractCapabilities(model);
+        const score = calculateScore(model, capabilities);
         return {
           id: model.id,
           name: model.name,
           provider: model.provider,
           description: translateDescription(model.description || 'No description available'),
-          capabilities: extractCapabilities(model),
+          capabilities: capabilities,
           price: {
             input: inputPrice * 1000000, // Convert from per token to per 1M tokens
             output: outputPrice * 1000000, // Convert from per token to per 1M tokens
             unit: 'm'
           },
           isFree: inputPrice === 0 && outputPrice === 0,
-          recommendedFor: [] // Extract recommended use cases from API response if available
+          recommendedFor: [], // Extract recommended use cases from API response if available
+          score: score,
+          contextLength: model.context_length,
+          supportedParametersCount: model.supported_parameters?.length || 0
         };
       });
       set({ models: convertedModels, filteredModels: convertedModels });
@@ -392,19 +440,24 @@ async function initializeModels() {
     const convertedModels = models.map((model: any) => {
       const inputPrice = parseFloat(model.pricing?.prompt || '0');
       const outputPrice = parseFloat(model.pricing?.completion || '0');
+      const capabilities = extractCapabilities(model);
+      const score = calculateScore(model, capabilities);
       return {
         id: model.id,
         name: model.name,
         provider: model.provider,
         description: translateDescription(model.description || 'No description available'),
-        capabilities: extractCapabilities(model),
+        capabilities: capabilities,
         price: {
           input: inputPrice * 1000000, // Convert from per token to per 1M tokens
           output: outputPrice * 1000000, // Convert from per token to per 1M tokens
           unit: 'm'
         },
         isFree: inputPrice === 0 && outputPrice === 0,
-        recommendedFor: [] // Extract recommended use cases from API response if available
+        recommendedFor: [], // Extract recommended use cases from API response if available
+        score: score,
+        contextLength: model.context_length,
+        supportedParametersCount: model.supported_parameters?.length || 0
       };
     });
     
