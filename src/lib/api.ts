@@ -2,11 +2,22 @@ import modelsData from './models.json';
 
 export async function fetchOpenRouterModels() {
   try {
-    console.log('Reading OpenRouter models from local file...');
-    console.log('Models data length:', modelsData.length);
+    console.log('Fetching OpenRouter models from API...');
     
-    // Extract necessary fields
-    const simplifiedModels = modelsData.map((model: any) => ({
+    // Use proxy to avoid CORS issues
+    const response = await fetch('/api/openrouter/api/v1/models');
+    
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status} ${response.statusText}`);
+    }
+    
+    console.log('API response status:', response.status);
+    
+    const data = await response.json();
+    console.log('API response data length:', data.data.length);
+    
+    // Extract necessary fields for all models
+    const simplifiedModels = data.data.map((model: any) => ({
       id: model.id,
       name: model.name,
       provider: model.id.split('/')[0],
@@ -19,8 +30,23 @@ export async function fetchOpenRouterModels() {
     
     return simplifiedModels;
   } catch (error) {
-    console.error('Error reading OpenRouter models:', error);
-    throw error;
+    console.error('Error fetching OpenRouter models:', error);
+    // Fallback to local file
+    console.log('Falling back to local models file...');
+    console.log('Models data length:', modelsData.length);
+    
+    const simplifiedModels = modelsData.map((model: any) => ({
+      id: model.id,
+      name: model.name,
+      provider: model.id.split('/')[0],
+      description: model.description || 'No description available',
+      pricing: model.pricing
+    }));
+    
+    console.log('Simplified models count:', simplifiedModels.length);
+    console.log('First few models:', simplifiedModels.slice(0, 3));
+    
+    return simplifiedModels;
   }
 }
 
@@ -37,10 +63,10 @@ export async function refreshOpenRouterModels() {
     }
     
     const data = await response.json();
-    console.log('API response received, models count:', data.models.length);
+    console.log('API response received, models count:', data.data.length);
     
     // Extract necessary fields
-    const simplifiedModels = data.models.map((model: any) => ({
+    const simplifiedModels = data.data.map((model: any) => ({
       id: model.id,
       name: model.name,
       provider: model.id.split('/')[0],
