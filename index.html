@@ -280,8 +280,9 @@ button,textarea{
 .featured-card{position:relative;border-radius:16px;overflow:hidden;background:var(--glass-bg);border:1px solid var(--glass-border);cursor:pointer;transition:all .4s ease}
 .featured-card:active{transform:scale(0.98)}
 .featured-img{width:100%;height:180px;position:relative;overflow:hidden;border-radius:16px 16px 0 0;transition:background .4s;background:var(--featured-img-bg)}
+.featured-img img{width:100%;height:100%;object-fit:cover;display:block}
 .featured-img::before{content:'';position:absolute;inset:0}
-.featured-img::after{content:'';position:absolute;inset:0}
+.featured-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(0,0,0,0.3))}
 .featured-badge{position:absolute;top:16px;left:16px;background:var(--featured-badge-bg);color:var(--accent-light);font-family:'Space Grotesk','Noto Sans SC',sans-serif;font-size:0.6rem;letter-spacing:3px;padding:5px 12px;border-radius:100px;z-index:2;border:1px solid var(--featured-badge-border);transition:background .4s,border-color .4s}
 .featured-body{padding:20px}
 .featured-meta{display:flex;align-items:center;gap:10px;margin-bottom:10px}
@@ -297,6 +298,7 @@ button,textarea{
 .article-card:first-child{padding-top:0}
 .article-card:active{opacity:0.6}
 .article-thumb{flex-shrink:0;width:72px;height:96px;border-radius:12px;overflow:hidden;position:relative}
+.article-thumb img{width:100%;height:100%;object-fit:cover;display:block}
 .article-thumb::after{content:'';position:absolute;inset:0;pointer-events:none}
 .thumb-1{background:var(--thumb1)}
 .thumb-2{background:var(--thumb2)}
@@ -515,6 +517,7 @@ button:focus:not(:focus-visible){outline:none}
     </div>
     <div class="featured-card">
       <div class="featured-img">
+        <img src="images/featured.jpg" alt="featured" loading="lazy">
         <span class="featured-badge">COSMIC</span>
       </div>
       <div class="featured-body">
@@ -535,7 +538,7 @@ button:focus:not(:focus-visible){outline:none}
       <span class="section-link">MORE →</span>
     </div>
     <div class="article-card">
-      <div class="article-thumb"><div class="thumb-1" style="width:100%;height:100%;border-radius:12px"></div></div>
+      <div class="article-thumb"><img src="images/thumb1.jpg" alt="article" loading="lazy"></div>
       <div class="article-content">
         <span class="article-category">技术</span>
         <h3 class="article-title">用 WebGL 在浏览器里渲染一个微型宇宙</h3>
@@ -543,7 +546,7 @@ button:focus:not(:focus-visible){outline:none}
       </div>
     </div>
     <div class="article-card">
-      <div class="article-thumb"><div class="thumb-2" style="width:100%;height:100%;border-radius:12px"></div></div>
+      <div class="article-thumb"><img src="images/thumb2.jpg" alt="article" loading="lazy"></div>
       <div class="article-content">
         <span class="article-category">设计</span>
         <h3 class="article-title">暗色 UI 的心理学：为什么我们沉迷于深色模式</h3>
@@ -551,7 +554,7 @@ button:focus:not(:focus-visible){outline:none}
       </div>
     </div>
     <div class="article-card">
-      <div class="article-thumb"><div class="thumb-3" style="width:100%;height:100%;border-radius:12px"></div></div>
+      <div class="article-thumb"><img src="images/thumb3.jpg" alt="article" loading="lazy"></div>
       <div class="article-content">
         <span class="article-category">随笔</span>
         <h3 class="article-title">凌晨三点的代码和一万个未捕获的 bug</h3>
@@ -559,7 +562,7 @@ button:focus:not(:focus-visible){outline:none}
       </div>
     </div>
     <div class="article-card">
-      <div class="article-thumb"><div class="thumb-4" style="width:100%;height:100%;border-radius:12px"></div></div>
+      <div class="article-thumb"><img src="images/thumb4.jpg" alt="article" loading="lazy"></div>
       <div class="article-content">
         <span class="article-category">宇宙</span>
         <h3 class="article-title">韦伯望远镜最新发现：宇宙比我们想象的更安静</h3>
@@ -567,7 +570,7 @@ button:focus:not(:focus-visible){outline:none}
       </div>
     </div>
     <div class="article-card">
-      <div class="article-thumb"><div class="thumb-5" style="width:100%;height:100%;border-radius:12px"></div></div>
+      <div class="article-thumb"><img src="images/thumb5.jpg" alt="article" loading="lazy"></div>
       <div class="article-content">
         <span class="article-category">AI</span>
         <h3 class="article-title">RAG 不是银弹：向量检索的局限与突破</h3>
