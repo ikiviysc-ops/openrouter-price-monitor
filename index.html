@@ -447,6 +447,23 @@ button:focus:not(:focus-visible){outline:none}
 
 /* ===== 子页面内容容器 ===== */
 .page-content{position:relative;z-index:10;padding:0 24px 120px}
+/* ===== 文章弹窗 ===== */
+.article-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s ease;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.article-modal-overlay.active{opacity:1;pointer-events:auto}
+.article-modal{position:fixed;top:0;left:0;right:0;bottom:0;z-index:201;background:var(--bg);overflow-y:auto;transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);-webkit-overflow-scrolling:touch}
+.article-modal.active{transform:translateY(0)}
+.article-modal-header{position:relative;width:100%;height:280px;overflow:hidden}
+.article-modal-header img{width:100%;height:100%;object-fit:cover;display:block}
+.article-modal-header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:120px;background:linear-gradient(to bottom,transparent,var(--bg))}
+.article-modal-close{position:fixed;top:calc(12px + env(safe-area-inset-top));right:16px;z-index:202;width:36px;height:36px;border-radius:50%;border:1px solid var(--glass-border);background:var(--glass-bg);color:var(--text-primary);font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s ease}
+.article-modal-close:active{transform:scale(.9)}
+.article-modal-body{padding:0 24px 100px;max-width:720px;margin:0 auto;position:relative;margin-top:-40px;z-index:1}
+.article-modal-cat{display:inline-block;padding:4px 12px;border-radius:100px;border:1px solid var(--glass-border);background:var(--glass-bg);color:var(--accent-light);font-size:0.65rem;letter-spacing:1.5px;margin-bottom:12px}
+.article-modal-title{font-family:'Space Grotesk','Noto Sans SC',sans-serif;font-size:1.4rem;font-weight:600;line-height:1.4;color:var(--text-primary);margin-bottom:12px;letter-spacing:-0.3px}
+.article-modal-meta{display:flex;align-items:center;gap:10px;margin-bottom:24px;font-size:0.75rem;color:var(--text-muted);letter-spacing:0.5px}
+.article-modal-content{font-size:0.9rem;line-height:2;color:var(--text-secondary)}
+.article-modal-content p{margin-bottom:16px}
+.article-modal-content h3{font-size:1.05rem;font-weight:500;color:var(--text-primary);margin:28px 0 12px;letter-spacing:-0.2px}
 </style>
 </head>
 <body>
@@ -515,7 +532,7 @@ button:focus:not(:focus-visible){outline:none}
       <span class="section-title">FEATURED</span>
       <span class="section-link">VIEW ALL →</span>
     </div>
-    <div class="featured-card">
+    <div class="featured-card" data-article="featured">
       <div class="featured-img">
         <img src="images/featured.jpg" alt="featured" loading="lazy">
         <span class="featured-badge">COSMIC</span>
@@ -537,7 +554,7 @@ button:focus:not(:focus-visible){outline:none}
       <span class="section-title">LATEST</span>
       <span class="section-link">MORE →</span>
     </div>
-    <div class="article-card">
+    <div class="article-card" data-article="webgl">
       <div class="article-thumb"><img src="images/thumb1.jpg" alt="article" loading="lazy"></div>
       <div class="article-content">
         <span class="article-category">技术</span>
@@ -545,7 +562,7 @@ button:focus:not(:focus-visible){outline:none}
         <div class="article-meta"><span>04.12</span><span>·</span><span>12 MIN</span><span>·</span><span>428</span></div>
       </div>
     </div>
-    <div class="article-card">
+    <div class="article-card" data-article="darkui">
       <div class="article-thumb"><img src="images/thumb2.jpg" alt="article" loading="lazy"></div>
       <div class="article-content">
         <span class="article-category">设计</span>
@@ -553,7 +570,7 @@ button:focus:not(:focus-visible){outline:none}
         <div class="article-meta"><span>04.08</span><span>·</span><span>6 MIN</span><span>·</span><span>312</span></div>
       </div>
     </div>
-    <div class="article-card">
+    <div class="article-card" data-article="bugs">
       <div class="article-thumb"><img src="images/thumb3.jpg" alt="article" loading="lazy"></div>
       <div class="article-content">
         <span class="article-category">随笔</span>
@@ -561,7 +578,7 @@ button:focus:not(:focus-visible){outline:none}
         <div class="article-meta"><span>04.03</span><span>·</span><span>5 MIN</span><span>·</span><span>567</span></div>
       </div>
     </div>
-    <div class="article-card">
+    <div class="article-card" data-article="telescope">
       <div class="article-thumb"><img src="images/thumb4.jpg" alt="article" loading="lazy"></div>
       <div class="article-content">
         <span class="article-category">宇宙</span>
@@ -569,7 +586,7 @@ button:focus:not(:focus-visible){outline:none}
         <div class="article-meta"><span>03.28</span><span>·</span><span>8 MIN</span><span>·</span><span>891</span></div>
       </div>
     </div>
-    <div class="article-card">
+    <div class="article-card" data-article="rag">
       <div class="article-thumb"><img src="images/thumb5.jpg" alt="article" loading="lazy"></div>
       <div class="article-content">
         <span class="article-category">AI</span>
@@ -652,28 +669,28 @@ button:focus:not(:focus-visible){outline:none}
     <!-- 热门文章推荐 -->
     <div class="explore-section reveal">
       <div class="explore-section-title">热门文章</div>
-      <div class="article-card visible" style="padding:16px 0">
-        <div class="article-thumb"><img src="images/thumb3.jpg" alt="article" loading="lazy"></div>
+      <div class="article-card visible" style="padding:16px 0" data-article="darkui">
+        <div class="article-thumb"><img src="images/thumb1.jpg" alt="article" loading="lazy"></div>
         <div class="article-content">
-          <span class="article-category">技术</span>
-          <h3 class="article-title">用 WebGL 在浏览器里渲染一个微型宇宙</h3>
-          <div class="article-meta"><span>04.12</span><span>·</span><span>12 MIN</span><span>·</span><span>428</span></div>
+          <span class="article-category">设计</span>
+          <h3 class="article-title">暗色 UI 的心理学：为什么我们沉迷于深色模式</h3>
+          <div class="article-meta"><span>04.08</span><span>·</span><span>6 MIN</span><span>·</span><span>312</span></div>
         </div>
       </div>
-      <div class="article-card visible" style="padding:16px 0">
+      <div class="article-card visible" style="padding:16px 0" data-article="telescope">
+        <div class="article-thumb"><img src="images/thumb2.jpg" alt="article" loading="lazy"></div>
+        <div class="article-content">
+          <span class="article-category">宇宙</span>
+          <h3 class="article-title">韦伯望远镜最新发现：宇宙比我们想象的更安静</h3>
+          <div class="article-meta"><span>03.28</span><span>·</span><span>8 MIN</span><span>·</span><span>891</span></div>
+        </div>
+      </div>
+      <div class="article-card visible" style="padding:16px 0" data-article="bugs">
         <div class="article-thumb"><img src="images/thumb4.jpg" alt="article" loading="lazy"></div>
         <div class="article-content">
-          <span class="article-category">AI</span>
-          <h3 class="article-title">RAG 架构实战：从零搭建企业知识库</h3>
-          <div class="article-meta"><span>04.08</span><span>·</span><span>15 MIN</span><span>·</span><span>612</span></div>
-        </div>
-      </div>
-      <div class="article-card visible" style="padding:16px 0">
-        <div class="article-thumb"><img src="images/thumb5.jpg" alt="article" loading="lazy"></div>
-        <div class="article-content">
           <span class="article-category">随笔</span>
-          <h3 class="article-title">深夜电台：给未来的自己写一封信</h3>
-          <div class="article-meta"><span>04.03</span><span>·</span><span>6 MIN</span><span>·</span><span>289</span></div>
+          <h3 class="article-title">凌晨三点的代码和一万个未捕获的 bug</h3>
+          <div class="article-meta"><span>04.03</span><span>·</span><span>5 MIN</span><span>·</span><span>567</span></div>
         </div>
       </div>
     </div>
@@ -1019,5 +1036,86 @@ document.querySelectorAll('.nav-item').forEach(btn=>{
   });
 });
 </script>
+<!-- ===== 文章弹窗 ===== -->
+<div class="article-modal-overlay" id="modalOverlay"></div>
+<div class="article-modal" id="articleModal">
+  <button class="article-modal-close" id="modalClose">✕</button>
+  <div class="article-modal-header"><img id="modalImg" src="" alt=""></div>
+  <div class="article-modal-body">
+    <span class="article-modal-cat" id="modalCat"></span>
+    <h1 class="article-modal-title" id="modalTitle"></h1>
+    <div class="article-modal-meta" id="modalMeta"></div>
+    <div class="article-modal-content" id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+// ===== 文章数据 =====
+const articles={
+  'featured':{
+    img:'images/featured.jpg',cat:'COSMIC',title:'当 AI 学会思考：我在事件视界边缘看到了什么',
+    date:'2026.04.15',read:'8 MIN',
+    content:`<p>在 GPT-4 和 Claude 之间，我发现了某种奇异的涌现。那是一个普通的周二下午，我在调试一段 RAG 检索的代码，随手向两个模型抛出了同一个问题。</p><h3>意外的对话</h3><p>Claude 的回答让我停下了手中的工作。它不是在回答我的问题，而是在质疑我的前提。"你确定你需要 RAG 吗？"它写道，"也许你需要的不是检索，而是一次真正的思考。"</p><h3>涌现的边界</h3><p>我开始系统性地测试这种"元认知"能力。结果令人不安——当问题足够复杂时，两个模型都展现出了某种超越模式匹配的行为。它们开始质疑问题的框架，提出我没想到的角度，甚至在我自己都没意识到的地方发现了逻辑漏洞。</p><p>这让我想起黑洞的事件视界——信息进去之后，会以完全不同的形式重新辐射出来。也许 AI 的"思考"也是如此。</p><h3>我们站在哪里</h3><p>现在的 AI 还远没有真正的理解力。但这种涌现行为提醒我们，智能可能不是我们以为的那样——它不是从上而下的设计，而是从下而上的生长。就像宇宙本身。</p>`
+  },
+  'webgl':{
+    img:'images/thumb1.jpg',cat:'技术',title:'用 WebGL 在浏览器里渲染一个微型宇宙',
+    date:'2026.04.12',read:'12 MIN',
+    content:`<p>三个月前，我决定在浏览器里重建一个简化版的宇宙模型。不是那种简单的星空背景，而是一个真正有引力、有轨道、有碰撞的粒子系统。</p><h3>为什么选 WebGL</h3><p>Canvas 2D 在处理超过 1000 个粒子时就开始卡顿。WebGL 可以把计算交给 GPU，轻松处理数万个粒子。Three.js 进一步简化了 API，让我可以专注于物理模拟本身。</p><h3>引力模拟</h3><p>每个粒子都有质量，彼此之间通过万有引力相互作用。使用 Barnes-Hut 算法将 O(n²) 的复杂度降到 O(n log n)，让实时模拟成为可能。</p><p>最有趣的部分是观察混沌——初始条件的微小变化会导致完全不同的演化路径。这和真实的宇宙一样。</p>`
+  },
+  'darkui':{
+    img:'images/thumb2.jpg',cat:'设计',title:'暗色 UI 的心理学：为什么我们沉迷于深色模式',
+    date:'2026.04.08',read:'6 MIN',
+    content:`<p>深夜两点，你关掉房间的灯，屏幕的蓝光映在脸上。为什么暗色模式让人如此上瘾？答案可能比你想的更深。</p><h3>不只是审美</h3><p>研究表明，暗色界面确实能减少蓝光对褪黑素的抑制。但更深层的原因是心理上的——暗色模式创造了一种"沉浸感"，就像电影院关灯后的体验。</p><h3>对比度的陷阱</h3><p>很多暗色 UI 犯了同一个错误：纯黑背景配纯白文字。这会造成眩光，长时间阅读反而更累。好的暗色设计应该使用深灰（#1a1a2e）而非纯黑，文字用柔和的白（#e0e0e0）而非纯白。</p><p>暗色模式不是把颜色反转那么简单。它是一种完全不同的设计语言。</p>`
+  },
+  'bugs':{
+    img:'images/thumb3.jpg',cat:'随笔',title:'凌晨三点的代码和一万个未捕获的 bug',
+    date:'2026.04.03',read:'5 MIN',
+    content:`<p>凌晨三点十七分。咖啡已经凉了第三杯。屏幕上的错误日志像瀑布一样滚动，每一行都在嘲笑我的自信。</p><h3>第 847 个 bug</h3><p>这是一个类型错误。一个该死的类型错误。我花了两个小时追踪它，最终发现是一个多余的空格。不是代码里的空格，是我在写注释时不小心按到了空格键。</p><h3>程序员的时间感</h3><p>有人说程序员对时间的感知和普通人不同。我觉得不对。程序员对时间的感知和黑洞附近的观察者一样——当你沉浸在代码中，外面的时间已经过了几个小时，而你觉得只过了几分钟。</p><p>凌晨四点，我终于修好了最后一个 bug。关上电脑的那一刻，窗外的天空已经开始泛白。又是没有星星的一夜。</p>`
+  },
+  'telescope':{
+    img:'images/thumb4.jpg',cat:'宇宙',title:'韦伯望远镜最新发现：宇宙比我们想象的更安静',
+    date:'2026.03.28',read:'8 MIN',
+    content:`<p>韦伯太空望远镜的最新观测数据让天文学家们陷入沉思：早期宇宙中的星系数量远少于预期。</p><h3>安静的开端</h3><p>根据标准宇宙学模型，宇宙大爆炸后约 5 亿年应该已经形成了大量星系。但韦伯的红外观测显示，那个时期的星系数量只有预测的三分之一。</p><h3>这意味着什么</h3><p>有几种可能的解释。第一，暗物质在早期宇宙中的分布比我们以为的更均匀，导致引力坍缩更慢。第二，第一批恒星的紫外辐射更强，抑制了后续恒星的形成。第三——也是最令人兴奋的可能——我们的宇宙学模型需要根本性的修正。</p><p>宇宙在告诉我们：你们还远远不了解我。</p>`
+  },
+  'rag':{
+    img:'images/thumb5.jpg',cat:'AI',title:'RAG 不是银弹：向量检索的局限与突破',
+    date:'2026.03.22',read:'10 MIN',
+    content:`<p>RAG（检索增强生成）在过去一年成为了 AI 应用的标准架构。但经过大量实践，我发现它远没有想象中那么完美。</p><h3>检索的精度问题</h3><p>向量检索的核心假设是"语义相似的文本在向量空间中距离相近"。这个假设在大多数情况下成立，但在处理专业术语、多义词和长尾知识时，检索精度会急剧下降。</p><h3>上下文窗口的矛盾</h3><p>更大的上下文窗口是解决方案吗？不完全是。研究表明，当上下文超过一定长度时，模型的"注意力"会分散，反而降低了对关键信息的提取能力。</p><h3>混合架构</h3><p>我目前最看好的方向是"知识图谱 + 向量检索"的混合架构。知识图谱提供精确的结构化关系，向量检索提供模糊的语义匹配，两者互补。</p>`
+  }
+};
+
+// ===== 弹窗逻辑 =====
+const modal=document.getElementById('articleModal');
+const overlay=document.getElementById('modalOverlay');
+const modalClose=document.getElementById('modalClose');
+
+function openArticle(key){
+  const a=articles[key];if(!a)return;
+  document.getElementById('modalImg').src=a.img;
+  document.getElementById('modalCat').textContent=a.cat;
+  document.getElementById('modalTitle').textContent=a.title;
+  document.getElementById('modalMeta').innerHTML='<span>'+a.date+'</span><span>·</span><span>'+a.read+'</span>';
+  document.getElementById('modalContent').innerHTML=a.content;
+  modal.classList.add('active');
+  overlay.classList.add('active');
+  document.body.style.overflow='hidden';
+  modal.scrollTop=0;
+}
+
+function closeModal(){
+  modal.classList.remove('active');
+  overlay.classList.remove('active');
+  document.body.style.overflow='';
+}
+
+modalClose.addEventListener('click',closeModal);
+overlay.addEventListener('click',closeModal);
+
+// 给所有文章卡片添加点击事件
+document.querySelectorAll('[data-article]').forEach(function(el){
+  el.addEventListener('click',function(){openArticle(this.dataset.article)});
+});
+</script>
+
 </body>
 </html>
