@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <script>!function(){try{var t=localStorage.getItem('theme');if(t!=='dark'&&t!=='light'){t='light';localStorage.setItem('theme','light')}document.documentElement.style.colorScheme=t;document.documentElement.setAttribute('data-theme',t)}catch(e){document.documentElement.style.colorScheme='light';document.documentElement.setAttribute('data-theme','light')}}()</script>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="darkreader-lock">
 <title>IKIVIY博客</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -96,8 +96,8 @@
   --glass-nav-border:rgba(0,0,0,0.08);
 }
 
-html{font-size:16px;scroll-behavior:smooth;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;font-weight:300;background:var(--bg);color:var(--text-primary);line-height:1.7;overflow-x:hidden;max-width:1080px;margin:0 auto;min-height:100vh;position:relative}
+html{font-size:16px;scroll-behavior:smooth;-webkit-font-smoothing:antialiased;overflow-x:hidden;background:var(--bg)}
+body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;font-weight:300;background:var(--bg);color:var(--text-primary);line-height:1.7;overflow-x:hidden;min-height:100vh;position:relative}
 
 /* ===== 主题切换按钮 ===== */
 .theme-toggle{
@@ -118,7 +118,7 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;font-weight:300;backg
 .hero-black-hole{
   height:580px;left:0;right:0;overflow:hidden;
   position:fixed;top:0;width:100%;z-index:1;pointer-events:none;
-  padding-top:env(safe-area-inset-top);
+  padding-top:env(safe-area-inset-top);max-width:1080px;margin:0 auto;
 }
 
 /* 可见状态触发动画 */
@@ -252,7 +252,7 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;font-weight:300;backg
 .nav-btn:active{border-color:var(--accent);color:var(--accent)}
 
 /* ===== 页面切换 ===== */
-.page{display:none;position:relative;z-index:10;background:var(--bg)}
+.page{display:none;position:relative;z-index:10}
 .page.active{display:block}
 
 /* ===== Hero ===== */
@@ -455,7 +455,7 @@ button:focus:not(:focus-visible){outline:none}
 .article-modal-header img{width:100%;height:auto;display:block}
 .article-modal.active{transform:translateY(0)}
 .article-modal-header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:120px;background:linear-gradient(to bottom,transparent,var(--bg))}
-.article-modal-close{position:fixed;top:calc(12px + env(safe-area-inset-top));right:16px;z-index:202;width:36px;height:36px;border-radius:50%;border:1px solid var(--glass-border);background:var(--glass-bg);color:var(--text-primary);font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s ease}
+.article-modal-close{position:fixed;top:calc(12px + env(safe-area-inset-top));right:16px;z-index:202;width:36px;height:36px;border-radius:50%;border:1px solid var(--glass-border);background:var(--glass-bg);color:var(--text-primary);font-size:18px;display:none;align-items:center;justify-content:center;cursor:pointer;transition:all .2s ease}
 .article-modal-close:active{transform:scale(.9)}
 .article-modal-body{padding:0 24px 100px;max-width:720px;margin:0 auto;position:relative;margin-top:-40px;z-index:1}
 .article-modal-cat{display:inline-block;padding:4px 12px;border-radius:100px;border:1px solid var(--glass-border);background:var(--glass-bg);color:var(--accent-light);font-size:0.65rem;letter-spacing:1.5px;margin-bottom:12px}
@@ -467,6 +467,7 @@ button:focus:not(:focus-visible){outline:none}
 </style>
 </head>
 <body>
+<div id="app" style="max-width:1080px;margin:0 auto;min-height:100vh;position:relative">
 
 <!-- ===== 黑洞效果（固定定位，始终在背景） ===== -->
 <div class="hero-black-hole hero-black-hole-visible" id="blackHole">
@@ -1119,6 +1120,7 @@ function openArticle(key){
   document.getElementById('modalContent').innerHTML=a.content;
   modal.classList.add('active');
   overlay.classList.add('active');
+  modalClose.style.display='flex';
   document.documentElement.style.overflow='hidden';
   document.body.style.overflow='hidden';
   modal.scrollTop=0;
@@ -1127,6 +1129,7 @@ function openArticle(key){
 function closeModal(){
   modal.classList.remove('active');
   overlay.classList.remove('active');
+  modalClose.style.display='none';
   document.documentElement.style.overflow='';
   document.body.style.overflow='';
 }
@@ -1140,5 +1143,6 @@ document.querySelectorAll('[data-article]').forEach(function(el){
 });
 </script>
 
+</div>
 </body>
 </html>
